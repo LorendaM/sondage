@@ -9,7 +9,8 @@ import '../../models/survey_model.dart';
 import '../../models/survey_question_model.dart';
 import '../../utils/constant.dart';
 import '../../utils/localstorage.dart';
-import '../widgets/floating_button_widget.dart';
+import '../widgets/back_button_widget.dart';
+import '../widgets/button_widget.dart';
 
 class SurveyQuestionScreen extends StatefulWidget {
   SurveyQuestionScreen(
@@ -85,8 +86,7 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
                                 itemBuilder: (context, index) {
                                   final option =currentSurveyQuestion.options[index];
                                   final bool checked =selectedOptions.contains(option.text);
-                                  final bool isSelected =
-                                      selectedOptions.contains(option.imageModel?.filename);
+                                  final bool isSelected = selectedOptions.contains(option.imageModel?.filename);
                                   final imageModel = option.imageModel;
                                   if (imageModel != null) {
                                     return Column(
@@ -95,26 +95,20 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
 
                                       InkWell(
                                         onTap: () {
-                                          if (currentSurveyQuestion.type ==
-                                              QuestionType.MultipleChoice) {
-                                            if (selectedOptions.length <
-                                                currentSurveyQuestion
-                                                    .requiredOptions) {
+                                          if (currentSurveyQuestion.type == QuestionType.MultipleChoice) {
+                                            if (selectedOptions.length < currentSurveyQuestion.requiredOptions) {
                                               setState(() {
                                                 if (isSelected) {
-                                                  selectedOptions
-                                                      .remove(imageModel.filename);
-                                                } else {
                                                   selectedOptions.add(imageModel.filename);
+                                                } else {
+                                                  selectedOptions.remove(imageModel.filename);
                                                 }
                                               });
                                             } else {
                                               Helper.showToast(
                                                   'Vous pouvez sélectionner au maximum ${currentSurveyQuestion.requiredOptions} réponses.');
                                             }
-                                          } else if (currentSurveyQuestion
-                                                  .type ==
-                                              QuestionType.SingleChoice) {
+                                          } else if (currentSurveyQuestion.type == QuestionType.SingleChoice) {
                                             setState(() {
                                               selectedOptions.clear();
                                               selectedOptions.add(imageModel.filename);
@@ -169,27 +163,8 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
                                   else {
                                     return Column(
                                       children: [
-
                                         InkWell(
                                           onTap: () {
-                                            /*if (currentSurveyQuestion.type ==
-                                                QuestionType.MultipleChoice) {
-                                              if (selectedOptions.length <
-                                                  currentSurveyQuestion
-                                                      .requiredOptions) {
-                                                setState(() {
-                                                  if (checked) {
-                                                    selectedOptions
-                                                        .remove(option.text);
-                                                  } else {
-                                                    selectedOptions.add(option.text);
-                                                  }
-                                                });
-                                              } else {
-                                                Helper.showToast(
-                                                    'Vous pouvez sélectionner au maximum ${currentSurveyQuestion.requiredOptions} réponses.');
-                                              }
-                                            }*/
                                             if (currentSurveyQuestion.type == QuestionType.MultipleChoice) {
                                               if (selectedOptions.contains(option.text)) {
                                                 setState(() {
@@ -207,9 +182,7 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
                                                 }
                                               }
                                             }
-                                            else if (currentSurveyQuestion
-                                                .type ==
-                                                QuestionType.SingleChoice) {
+                                            else if (currentSurveyQuestion.type == QuestionType.SingleChoice) {
                                               setState(() {
                                                 selectedOptions.clear();
                                                 selectedOptions.add(option.text);
@@ -298,65 +271,29 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    FloatingButtonWidget(
-                      color: Helper.kPrimaryColor,
-                      onPressed: () {
-                        _retour();
+                    CustomElevatedButtonBack(
+                      onPressed: (){
+                        back();
                       },
-                      icon: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.black54,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(Icons.arrow_back)),
+                      icon: const Icon(
+                        Icons.arrow_back,
+                      ),
                       child: CustomText(
                         data: "Retour",
                         color: Colors.white,
                         textSize: 16,
+                      ),),
+                    CustomElevatedButton(
+                      onPressed: (){
+                        nextQuestion();
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward,
                       ),
-                    ),
-                    SizedBox(
-                      height: 55,
-                      width: 130,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          //_nextQuestion();
-                          _suivant();
-                        },
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Helper.kPrimaryColor),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(8)),
-                                  side: BorderSide(
-                                    color: Helper.kPrimaryColor,
-                                  )),
-                            ),
-                            elevation: MaterialStateProperty.all(0)),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              data: "Suivant",
-                              color: Colors.white,
-                              textSize: 16,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.black54,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.arrow_forward,
-                              ),
-                            ),
-                          ],
-                        ),
+                      child: CustomText(
+                        data: "Suivant",
+                        color: Colors.white,
+                        textSize: 16,
                       ),
                     ),
                   ],
@@ -372,7 +309,7 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
     );
   }
 
-  _retour() {
+  back() {
     if (currentQuestionIndex > 0) {
       setState(() {
         currentQuestionIndex--;
@@ -382,135 +319,109 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
     }
   }
 
-  _nextQuestion() {
-    if (widget.currentSurveyQuestion?.type == QuestionType.MultipleChoice ||
-        widget.currentSurveyQuestion?.type == QuestionType.SingleChoice) {
-      if (selectedOptions.isNotEmpty) {
-        if (selectedOptions.length ==
-            widget.currentSurveyQuestion!.requiredOptions) {
-          print(
-              'Réponses de l\'utilisateur pour la question ${currentQuestionIndex + 1}: $selectedOptions');
-          if (selectedOptions.contains("Autre")) {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text("Option Autre"),
-                  content: Container(
-                    height: 62,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      color: LocalStorage.isDarkTheme
-                          ? Colors.white.withOpacity(0.03)
-                          : Colors.black.withOpacity(0.03),
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    ),
-                    child: TextFormField(
-                      controller: _controller,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Veuillez compléter ce champ";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: LocalStorage.isDarkTheme
-                                ? Colors.transparent
-                                : Colors.grey.shade200,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(5),
+  nextQuestion() {
+    SurveyQuestionModel currentSurveyQuestion =
+    widget.surveyModel.question[currentQuestionIndex];
+    if (currentSurveyQuestion.type == QuestionType.MultipleChoice ||
+        currentSurveyQuestion.type == QuestionType.SingleChoice) {
+        if (selectedOptions.isNotEmpty) {
+      if (selectedOptions.length == currentSurveyQuestion.requiredOptions) {
+        print(
+            'Réponses de l\'utilisateur pour la question ${currentQuestionIndex +
+                1}: $selectedOptions');
+        if (selectedOptions.contains("Autre")) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text("Option Autre"),
+                content: Container(
+                  height: 62,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    color: LocalStorage.isDarkTheme
+                        ? Colors.white.withOpacity(0.03)
+                        : Colors.black.withOpacity(0.03),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  ),
+                  child: TextFormField(
+                    controller: _controller,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Veuillez compléter ce champ";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: LocalStorage.isDarkTheme
+                              ? Colors.transparent
+                              : Colors.grey.shade200,
+                          width: 1,
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: LocalStorage.isDarkTheme
-                                ? Colors.transparent
-                                : Colors.grey.shade200,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        filled: LocalStorage.isDarkTheme,
-                        hintText: "Saisissez votre réponse",
-                        hintStyle: const TextStyle(fontSize: 13.1),
-                        fillColor: LocalStorage.isDarkTheme
-                            ? Colors.white10
-                            : Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(5),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: LocalStorage.isDarkTheme
+                              ? Colors.transparent
+                              : Colors.grey.shade200,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      filled: LocalStorage.isDarkTheme,
+                      hintText: "Saisissez votre réponse",
+                      hintStyle: const TextStyle(fontSize: 13.1),
+                      fillColor: LocalStorage.isDarkTheme
+                          ? Colors.white10
+                          : Colors.grey.shade100,
                     ),
                   ),
-                  actions: [
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_controller.text.isNotEmpty) {
-                          otherOptionText = _controller.text;
-                          Navigator.pop(context);
-                          onTextResponseChanged(
-                              currentQuestionIndex, otherOptionText);
-                          // Passer à la question suivante
-                          _proceedToNextQuestion();
-                        } else {
-                          Get.snackbar(
-                            'Réponse manquante',
-                            'Veuillez saisir une réponse.',
-                          );
-                        }
-                      },
-                      child: Text("OK"),
-                    ),
-                  ],
-                );
-              },
-            );
-            return;
-          } else {
-            _proceedToNextQuestion();
-          }
-        } else {
-          Helper.showToast(
-              'Veuillez sélectionner ${widget.currentSurveyQuestion?.requiredOptions} réponses pour cette question.');
-        }
-        /*else if (currentQuestionIndex < widget.surveyModel.questions.length - 1) {
-          // Enregistrer la réponse de l'utilisateur dans userResponses
-          userResponses.add(QuestionResponse(
-            questionIndex: currentQuestionIndex,
-            response: _controller.text,
-          ));
-          setState(() {
-            currentQuestionIndex++;
-            selectedOptions.clear();
-          });
-        } else {
-          // Enregistrer la dernière réponse de l'utilisateur avant de passer à l'écran de résultats
-          userResponses.add(QuestionResponse(
-            questionIndex: currentQuestionIndex,
-            response: _controller.text,
-          ));
-          Get.to(
-                () => SurveyResultScreen(
-              surveyModel: widget.surveyModel,
-              userResponses: userResponses,
-              totalQuestions: widget.surveyModel.questions.length,
-            ),
-            transition: Transition.circularReveal,
+                ),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_controller.text.isNotEmpty) {
+                        otherOptionText = _controller.text;
+                        onTextResponseChanged(
+                            currentQuestionIndex, otherOptionText);
+                        Navigator.pop(context);
+                        _proceedToNextQuestion();
+                      } else {
+                        Get.snackbar(
+                          'Réponse manquante',
+                          'Veuillez saisir une réponse.',
+                        );
+                      }
+                    },
+                    child: Text("OK"),
+                  ),
+                ],
+              );
+            },
           );
-        }*/
-      } else {
-        Get.snackbar(
-          'Réponse manquante',
-          'Veuillez sélectionner au moins une réponse.',
-        );
-        return;
+        }
+        else {
+          onOptionSelected(currentQuestionIndex, selectedOptions);
+          _proceedToNextQuestion();
+        }
       }
-    } else if (widget.currentSurveyQuestion?.type == QuestionType.Text) {
+      else {
+        Helper.showToast(
+            'Veuillez sélectionner ${currentSurveyQuestion
+                .requiredOptions } réponses pour cette question.');
+      }
+    }
+    }else {
+      setState(() {
+        otherOptionText = controller.text;
+      });
       if (otherOptionText.isNotEmpty) {
-        onOptionSelected(currentQuestionIndex, selectedOptions);
-        print('**********************');
+        onTextResponseChanged(currentQuestionIndex, otherOptionText);
         print('Réponse de l\'utilisateur pour la question ${currentQuestionIndex + 1}: $otherOptionText');
-        print('**********************');
         _proceedToNextQuestion();
       } else {
         Get.snackbar(
@@ -518,195 +429,7 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
           'Veuillez saisir une réponse.',
         );
       }
-      return;
     }
-    _proceedToNextQuestion();
-  }
-
-  _suivant() {
-    /*if (userResponses[currentQuestionIndex].optionResponse.isNotEmpty||
-        userResponses[currentQuestionIndex].textResponse.isNotEmpty){
-      if (widget.currentSurveyQuestion?.type == QuestionType.MultipleChoice ||
-          widget.currentSurveyQuestion?.type == QuestionType.SingleChoice) {
-        if (selectedOptions.isNotEmpty) {
-          if (selectedOptions.length ==widget.currentSurveyQuestion?.requiredOptions) {
-
-            print('Réponses de l\'utilisateur pour la question ${currentQuestionIndex + 1}: $selectedOptions');
-            if (selectedOptions.contains("Autre")) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text("Option Autre"),
-                    content: Container(
-                      height: 62,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        color: LocalStorage.isDarkTheme
-                            ? Colors.white.withOpacity(0.03)
-                            : Colors.black.withOpacity(0.03),
-                        borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      ),
-                      child: TextFormField(
-                        controller: _controller,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Veuillez compléter ce champ";
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: LocalStorage.isDarkTheme
-                                  ? Colors.transparent
-                                  : Colors.grey.shade200,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: LocalStorage.isDarkTheme
-                                  ? Colors.transparent
-                                  : Colors.grey.shade200,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          filled: LocalStorage.isDarkTheme,
-                          hintText: "Saisissez votre réponse",
-                          hintStyle: const TextStyle(fontSize: 13.1),
-                          fillColor: LocalStorage.isDarkTheme
-                              ? Colors.white10
-                              : Colors.grey.shade100,
-                        ),
-                      ),
-                    ),
-                    actions: [
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_controller.text.isNotEmpty) {
-                            otherOptionText = _controller.text;
-                            Navigator.pop(context);
-                            onTextResponseChanged(
-                                currentQuestionIndex, otherOptionText);
-                            // Passer à la question suivante
-                            _proceedToNextQuestion();
-                          } else {
-                            Get.snackbar(
-                              'Réponse manquante',
-                              'Veuillez saisir une réponse.',
-                            );
-                          }
-                        },
-                        child: Text("OK"),
-                      ),
-                    ],
-                  );
-                },
-              );
-              return;
-            }
-            else {
-              _proceedToNextQuestion();
-            }
-          }
-          else {
-            Helper.showToast(
-                'Veuillez sélectionner ${widget.currentSurveyQuestion?.requiredOptions} réponses pour cette question.');
-          }
-        }
-        else {
-          Get.snackbar(
-            'Réponse manquante',
-            'Veuillez sélectionner au moins une réponse.',
-          );
-          return;
-        }
-      }
-      else{
-        if (otherOptionText.isNotEmpty) {
-          onOptionSelected(currentQuestionIndex, selectedOptions);
-          print('**********************');
-          print('Réponse de l\'utilisateur pour la question ${currentQuestionIndex + 1}: $otherOptionText');
-          print('**********************');
-          _proceedToNextQuestion();
-        }
-        else {
-          Get.snackbar(
-            'Réponse manquante',
-            'Veuillez saisir une réponse.',
-          );
-        }
-        return Get.snackbar(
-          'Réponse manquante',
-          'Veuillez saisir une réponse.',
-        );
-      }
-    }
-    else{
-      Get.snackbar(
-        'Réponse manquante',
-        'Il faut au moins une réponse.',
-      );
-    }*/
-    if (userResponses[currentQuestionIndex].optionResponse.isNotEmpty ||
-        userResponses[currentQuestionIndex].textResponse.isNotEmpty) {
-      if (widget.currentSurveyQuestion?.type == QuestionType.MultipleChoice ||
-          widget.currentSurveyQuestion?.type == QuestionType.SingleChoice) {
-        if (selectedOptions.isNotEmpty) {
-          if (selectedOptions.length ==
-              widget.currentSurveyQuestion?.requiredOptions) {
-            print(
-                'Réponses de l\'utilisateur pour la question ${currentQuestionIndex + 1}: $selectedOptions');
-            if (selectedOptions.contains("Autre")) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    // ... (rest of the dialog setup)
-                  );
-                },
-              );
-              return;
-            } else {
-              _proceedToNextQuestion();
-            }
-          } else {
-            Helper.showToast(
-                'Veuillez sélectionner ${widget.currentSurveyQuestion?.requiredOptions} réponses pour cette question.');
-          }
-        } else {
-          Get.snackbar(
-            'Réponse manquante',
-            'Veuillez sélectionner au moins une réponse.',
-          );
-          return;
-        }
-      } else {
-        if (otherOptionText.isNotEmpty) {
-          onOptionSelected(currentQuestionIndex, selectedOptions);
-          print('**********************');
-          print(
-              'Réponse de l\'utilisateur pour la question ${currentQuestionIndex + 1}: $otherOptionText');
-          print('**********************');
-          _proceedToNextQuestion();
-        } else {
-          Get.snackbar(
-            'Réponse manquante',
-            'Veuillez saisir une réponse.',
-          );
-        }
-      }
-    } else {
-      Get.snackbar(
-        'Réponse manquante',
-        'Il faut au moins une réponse.',
-      );
-    }
-
   }
 
   onOptionSelected(int questionIndex, List<String> selectedOptions) {
@@ -727,9 +450,6 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen> {
     if (currentQuestionIndex < widget.surveyModel.question.length - 1) {
       setState(() {
         currentQuestionIndex++;
-        onOptionSelected(currentQuestionIndex, selectedOptions);
-        onTextResponseChanged(currentQuestionIndex, otherOptionText);
-        selectedOptions.clear();
       });
     } else {
       Get.to(

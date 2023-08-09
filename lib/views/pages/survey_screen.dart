@@ -122,7 +122,6 @@ class _SurveyScreenState extends State<SurveyScreen> {
                                                       children: [
                                                         CustomText(
                                                           data:element.title,
-                                                          //"Bienvenue dans la communaute Gratis, dites-nous en plus!",
                                                           color: Helper.textColor,
                                                           textSize: 19,
                                                           fontWeight: FontWeight.w500,
@@ -144,7 +143,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
                                                 ),
                                                 CustomText(
                                                   data:
-                                                  '''Nouvelle enquete !''',
+                                                  'Nouvelle enquete !',
                                                   color: Helper.textColor,
                                                   textSize: 17,
                                                   fontWeight: FontWeight.w500,
@@ -154,7 +153,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
                                                 ),
                                                 CustomText(
                                                   data:
-                                                  '''Completez-la maintenant''',
+                                                  'Completez-la maintenant',
                                                   color: Helper.textColor,
                                                   textSize: 17,
                                                   fontWeight: FontWeight.w500,

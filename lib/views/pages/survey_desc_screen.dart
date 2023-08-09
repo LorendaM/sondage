@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sondage/views/pages/survey_question_screen.dart';
-import 'package:sondage/views/widgets/floating_button_widget.dart';
+import 'package:sondage/views/widgets/button_widget.dart';
+import 'package:sondage/views/widgets/back_button_widget.dart';
 import 'package:sondage/views/widgets/text_widget.dart';
 
 import '../../data/survey_data.dart';
@@ -47,67 +48,34 @@ class _SurveyDescScreenState extends State<SurveyDescScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    FloatingButtonWidget(
-                      color: Helper.kPrimaryColor,
+                    CustomElevatedButtonBack(
                       onPressed: (){
                         Get.back();
                       },
-                      icon: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.black54,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(Icons.arrow_back)),
+                      icon: const Icon(
+                        Icons.arrow_back,
+                      ),
                       child: CustomText(
                         data: "Retour",
                         color: Colors.white,
                         textSize: 16,
                       ),
                     ),
-                    SizedBox(
-                      height: 55,
-                      width:  130,
-                      child: ElevatedButton(
-                        onPressed: () {
+                    CustomElevatedButton(
+                        onPressed: (){
                           Get.to(
                                   () => SurveyQuestionScreen(surveyModel: widget.surveyModel,
                               ),
                               transition: Transition.circularReveal);
                         },
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Helper.kPrimaryColor),
-                            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                side: BorderSide(
-                                  color: Helper.kPrimaryColor,
-                                )
-                            ),
-                            ),
-                            elevation: MaterialStateProperty.all(0)
+                      icon: const Icon(
+                      Icons.arrow_forward,
+                    ),
+                        child: CustomText(
+                          data: "Suivant",
+                          color: Colors.white,
+                          textSize: 16,
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                              data: "Suivant",
-                              color: Colors.white,
-                              textSize: 16,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.black54,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.arrow_forward,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                   ],
                 ),

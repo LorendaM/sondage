@@ -37,22 +37,24 @@ List<SurveyModel> surveys = [
       ),
       SurveyQuestionModel(
         questionText: 'Etes-vous satisfait de gratis ?',
-        type: QuestionType.Text,
-        options: [],
-      ),
-      SurveyQuestionModel(
-        questionText: 'Quel amelioration vous aimeriez voir dans les prochaines version de gratis ?',
         type: QuestionType.SingleChoice,
         options: [
           OptionModel(text: "Oui",),
           OptionModel(text: "Non"),
           OptionModel(text: "Un peu"),
         ],
+        requiredOptions: 1
+      ),
+      SurveyQuestionModel(
+        questionText: 'Quel amelioration vous aimeriez voir dans les prochaines version de gratis ?',
+        type: QuestionType.Text,
+        requiredOptions: 0,
+        options: [],
       ),
     ],
   ),
   SurveyModel(
-    id: 1,
+    id: 2,
     title: 'Gratis en image',
     point: 105,
     time: 5,

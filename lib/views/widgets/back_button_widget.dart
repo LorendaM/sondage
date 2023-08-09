@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import '../../utils/constant.dart';
 
 
-class CustomElevatedButton extends StatelessWidget {
+class CustomElevatedButtonBack extends StatelessWidget {
 
   final Widget child;
   final Icon icon;
   final Function()? onPressed;
-  const CustomElevatedButton({
+  const CustomElevatedButtonBack({
     Key? key,
     required this.onPressed,
     required this.child,required this.icon,
@@ -26,17 +26,17 @@ class CustomElevatedButton extends StatelessWidget {
         child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              child,
+              Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.black54,
+                    shape: BoxShape.circle,
+                  ),
+                  child: icon
+              ),
               const SizedBox(
                 width: 10,
               ),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Colors.black54,
-                  shape: BoxShape.circle,
-                ),
-                child: icon
-              ),
+              child,
             ]),
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Helper.kPrimaryColor),
@@ -48,7 +48,7 @@ class CustomElevatedButton extends StatelessWidget {
             ),
             ),
             elevation: MaterialStateProperty.all(0)
-            ),
+        ),
       ),
     );
   }

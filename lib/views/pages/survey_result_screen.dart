@@ -89,27 +89,10 @@ class _SurveyResultScreenState extends State<SurveyResultScreen> {
                     const SizedBox(
                       height: 40,
                     ),
-                    ScaleAnimation(
-                      child: SizedBox(
-                        height: 3,
-                        width: Get.width * 0.75,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          child: TweenAnimationBuilder<double>(
-                            curve: Curves.slowMiddle,
-                            tween: Tween<double>(begin: 0.0, end: 1),
-                            duration: Duration(milliseconds: 3000),
-                            builder: (context, value, _) => LinearProgressIndicator(
-                              value: value,
-                              backgroundColor: LocalStorage.isDarkTheme
-                                  ? Colors.black26
-                                  : Colors.black26,
-                              color: Helper.kPrimaryColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                LinearProgressIndicator(
+                  value: widget.userResponses.length / totalQuestions,
+                  backgroundColor: Helper.kPrimaryColor,
+                ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -130,87 +113,35 @@ class _SurveyResultScreenState extends State<SurveyResultScreen> {
                     const SizedBox(
                       height: 50,
                     ),
-
-                    CustomElevatedButton(
-                        color: Helper.kPrimaryColor,
-                        onPressed: () {
-                          Get.to(
-                                  () => const SurveyScreen(),
-                              transition: Transition
-                                  .circularReveal);
-                        },
-                        child: CustomText(
-                          data: "Continuer",
-                          color: Helper.textColor,
-                          textSize: 16,
-                        ))
+                SizedBox(
+                  height: 55,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                Get.to(
+                () => const SurveyScreen(),
+                transition: Transition
+                    .circularReveal);
+                },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Helper.kPrimaryColor),
+                        shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        ),
+                        elevation: MaterialStateProperty.all(0)
+                    ),
+                    child: CustomText(
+                      data: "Continuer",
+                      color: Helper.textColor,
+                      textSize: 16,
+                    ),
+                  ),
+                )
                   ],
                 ),
               ),
             ),
-            /*SingleChildScrollView(
-              child: Padding(
-                padding: const  EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CustomText(
-                      data: '''!!! Felicitation Username !!!''',
-                      color: Helper.textColor,
-                      textSize: 20,
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    CustomText(
-                      data: '''Merci d'avoir participe a ce sondage!''',
-                      color: Helper.textColor,
-                      textSize: 20,
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                   LinearProgressIndicator(
-                      value: widget.userResponses.length / totalQuestions,
-                      backgroundColor: Helper.kPrimaryColor,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomText(
-                      data:
-                      '''Gardez un oeil sur l\'application nous vous informerons des nouvelles possibilite de participer a des sondage et de gagner des points. Vous trouverez tous les sondages auxquels vous n\'avez pas encore participer''',
-                      color: Helper.textColor,
-                      textSize: 18,
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    CustomText(
-                      data: "A bientot sur Gratis",
-                      color: Helper.textColor,
-                      textSize: 20,
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    CustomElevatedButton(
-                        color: Helper.kPrimaryColor,
-                        onPressed: () {
-                          Get.to(
-                                  () => const SurveyScreen(),
-                              transition: Transition
-                                  .circularReveal);
-                        },
-                        child: CustomText(
-                          data: "Continuer",
-                          color: Helper.textColor,
-                          textSize: 16,
-                        ))
-                  ],
-                ),
-              ),
-            ),*/
           ),
           Positioned(
             bottom: 20,

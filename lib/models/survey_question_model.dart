@@ -12,7 +12,7 @@ class SurveyQuestionModel {
   int requiredOptions;
   List<ImageModel>? imageModel;
 
-  SurveyQuestionModel({required this.questionText,required this.type,this.requiredOptions = 1, required this.options, this.imageModel});
+  SurveyQuestionModel({required this.questionText,required this.type, required this.requiredOptions , required this.options, this.imageModel});
 
   factory SurveyQuestionModel.fromJson(Map<String, dynamic> json) {
    List<dynamic>? imageList = json['imageModel'] as List<dynamic>?;
@@ -28,7 +28,6 @@ class SurveyQuestionModel {
         options: json["options"],
         requiredOptions: json["requiredOptions"],
         imageModel: imageModel?? [],
-        //imageModel: json["imageModel"]== null ? null : ImageModel.fromJson(json["imageModel"]),
     );
   }
 
