@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Questionnaire sur les fruits",
+    "questions": [
+      {
+      "questionText": "Quel est votre fruit préféré ?",
+      "responseType": "SingleChoice",
+      "options": ["Pomme", "Banane", "Orange", "Raisin"]
+      },
+      {
+        "questionText": "Quels fruits aimez-vous ?",
+        "responseType": "MultipleChoice",
+        "options": ["Pomme", "Banane", "Orange", "Raisin", "Fraise"]
+      },
+      {
+        "questionText": "Quel est votre fruit préféré ?",
+        "responseType": "Text",
+        "options": []
+      }
+    ]
+  },
+  {
+    "title": "Questionnaire sur les animaux",
+    "questions": [
+      {
+        "questionText": "Quel est votre animal préféré ?",
+        "responseType": "SingleChoice",
+        "options": ["Chien", "Chat", "Oiseau", "Lion"]
+      },
+      {
+      "questionText": "Avez-vous deja eu un animal domestique?",
+      "responseType": "SingleChoice",
+      "options": ["Oui", "Non"]
+      }
+    ]
+  }
+]
